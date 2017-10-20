@@ -8,12 +8,14 @@ app.set('states', {});
 app.get('/', (req,res) => res.sendFile(__dirname+'/index.html'));
 app.get('/push', (req,res) => {
 	var store = app.get('states');
-	if( typeof req.query.state === 'string' ) {
+	var state = req.query.state;
+	if( typeof state === 'string' ) {
 		store[state] = {time: Math.floor(new Date()/1000)};
 		app.set('states', store);
 		setTimeout(() => {
 			var store = app.get('states');
 			delete store[state];
+			app.set('states',store);
 		}, maxStateStorageTime, 'put the state here');
 	}
 	res.send('');
