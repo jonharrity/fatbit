@@ -21,7 +21,7 @@ app.get('/push', (req,res) => {
 app.get('/cb', (req,res) => {
 	var store = app.get('states');
 	var state = req.query.state;
-	var code = req.query.code;
+	var code = req.query.access_token;
 	if( typeof state === 'string' && typeof code === 'string' && (typeof store.tate != 'undefined') ) {
 		store[state].code = code;
 	}
