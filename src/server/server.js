@@ -43,6 +43,7 @@ app.get('/cb', (req,res) => {
 					var store = app.get('states');
 					var state = v.state;
 					store[state].token = JSON.parse(n.responseText).access_token;
+					app.set('states',store);
 				}
 			};
 		}({n: xhr, state: state});
