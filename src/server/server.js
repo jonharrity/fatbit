@@ -6,26 +6,33 @@ var maxStateStorageTime = 1000 * 60 * 5;
 app.set('states', {});
 
 app.get('/', (req,res) => res.sendFile(__dirname+'/index.html'));
-app.get('/cb', (req,res) => {
-	var store = app.get('states');
-//	var code = red . something
-//	var state = req . something
-//	store[state].code = code;
-});
 app.get('/push', (req,res) => {
 	var store = app.get('states');
-//	var state = req.something
-//	states[ state ] = {time: timestamp}
-	setTimeout(() => {
-		var store = app.get('states');
-		delete store[state];
-	}, maxStateStorageTime, 'put the state here');
+	if( typeof req.query.state === 'string' ) {
+		store[state] = {time: Math.floor(new Date()/1000)};
+		app.set('states', store);
+		setTimeout(() => {
+			var store = app.get('states');
+			delete store[state];
+		}, maxStateStorageTime, 'put the state here');
+	}
+	res.send('');
+});
+app.get('/cb', (req,res) => {
+	var store = app.get('states');
+	var state = req.query.state;
+	var code = req.query.code;
+	if( typeof state === 'string' && typeof code === 'string' && (typeof store.tate != 'undefined') ) {
+		store[state].code = code;
+	}
+	res.send('');
 });
 app.get('/pop', (req,res) => {
 	var store = app.get('states');
-//	var state = req. something;
-//	var code = store[state].code; --put in try or something
-//	res.send( the access token ));
-	res.send('nothing yet :/');
+	var state = req.query.state;
+	if( typeof state === 'string' && (typeof store[state] != 'undefined')) {
+		res.send(store[state].code);
+	}
+	res.send('');
 });
 app.listen(port,()=>console.log('fatbit server started'));
