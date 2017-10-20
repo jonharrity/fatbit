@@ -27,7 +27,8 @@ app.get('/cb', (req,res) => {
 	if( typeof state === 'string' && typeof code === 'string' && (typeof store[state] != 'undefined') ) {
 		res.send('success');
 		var xhr = new XMLHttpRequest();
-		var basic = new Buffer('22CJHV:5b010441676c31c691685973128defb0').toString('base64');
+//		var basic = new Buffer('22CJHV:5b010441676c31c691685973128defb0').toString('base64');
+		var basic = '5b010441676c31c691685973128defb0';
 		var params = 'client_id=22CJHV&grant_type=authorization_code&redirect_uri=https://desolate-river-72208.herokuapp.com'+req.originalUrl;
 		xhr.open('POST','https://api.fitbit.com/oauth2/token',true);
 		xhr.setRequestHeader('Authorization','Basic ' + basic);
