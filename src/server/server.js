@@ -24,10 +24,7 @@ app.get('/cb', (req,res) => {
 	var store = app.get('states');
 	var state = req.query.state;
 	var code = req.query.code;
-	var id = req.query.user_id;
-	if( typeof state === 'string' && typeof code === 'string' && typeof id === 'string' && (typeof store[state] != 'undefined') ) {
-		store[state].id = id;
-		app.set('states',store);
+	if( typeof state === 'string' && typeof code === 'string' && (typeof store[state] != 'undefined') ) {
 		res.send('success');
 		var xhr = new XMLHttpRequest();
 		var basic = new Buffer('22CJHV:5b010441676c31c691685973128defb0').toString('base64');
@@ -42,7 +39,9 @@ app.get('/cb', (req,res) => {
 				if( n.readyState === XMLHttpRequest.DONE && n.status === 200 ) {
 					var store = app.get('states');
 					var state = v.state;
-					store[state].token = JSON.parse(n.responseText).access_token;
+					var parsed = JSON.parse(n.responseText);
+					store[state].token = parsed.access_token;
+					store[state].id = parsed.user_id;
 					app.set('states',store);
 				}
 			};
