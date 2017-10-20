@@ -12,11 +12,11 @@ app.get('/push', (req,res) => {
 	if( typeof state === 'string' ) {
 		store[state] = {time: Math.floor(new Date()/1000)};
 		app.set('states', store);
-		setTimeout(() => {
+		setTimeout((state) => {
 			var store = app.get('states');
 			delete store[state];
 			app.set('states',store);
-		}, maxStateStorageTime, 'put the state here');
+		}, maxStateStorageTime, state);
 	}
 	res.send('');
 });
@@ -24,10 +24,13 @@ app.get('/cb', (req,res) => {
 	var store = app.get('states');
 	var state = req.query.state;
 	var code = req.query.access_token;
-	if( typeof state === 'string' && typeof code === 'string' && (typeof store.tate != 'undefined') ) {
+	if( typeof state === 'string' && typeof code === 'string' && (typeof store[state] != 'undefined') ) {
 		store[state].code = code;
+		app.set('states',store);
+		res.send('success');
 	}
-	res.send('');
+	else
+		res.send('error');
 });
 app.get('/pop', (req,res) => {
 	var store = app.get('states');
